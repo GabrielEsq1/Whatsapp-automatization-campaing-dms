@@ -7,7 +7,7 @@
         }
     ],
     "env": {
-        "DATABASE_URL": "@database_url",
+        "DATABASE_URL": "@whatsapp_db_secret",
         "NEXTAUTH_SECRET": "@nextauth_secret"
     }
 }

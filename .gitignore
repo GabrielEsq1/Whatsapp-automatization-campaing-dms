@@ -10,4 +10,5 @@ out/
 # public/screenshots/
 dev.db
 *.sqlite
-.env
+# .env
+.vercel
