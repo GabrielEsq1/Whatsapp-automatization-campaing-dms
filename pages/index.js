@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import DemoCarousel from '../components/DemoCarousel';
+import { Zap, ArrowRight, MessageCircle, Shield } from 'lucide-react';
 
 export default function Home() {
     return (
