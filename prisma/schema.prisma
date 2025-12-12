@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id @default(uuid())
+  email       String     @unique
+  password    String
+  createdAt   DateTime   @default(now())
+  
+  // Settings
+  delayMs     Int        @default(1500) // Base delay
+  concurrency Int        @default(1)
+
+  // Relations
+  messages    Message[]
+  campaigns   Campaign[]
+}
+
+model Campaign {
+  id          String    @id @default(uuid())
+  name        String
+  status      String    @default("DRAFT") // DRAFT, PROCESSING, COMPLETED, PAUSED
+  messageTemplate String
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  
+  contacts    CampaignContact[]
+  createdAt   DateTime  @default(now())
+}
+
+model CampaignContact {
+  id          String    @id @default(uuid())
+  phone       String
+  status      String    @default("PENDING") // PENDING, SENT, FAILED
+  campaignId  String
+  campaign    Campaign  @relation(fields: [campaignId], references: [id])
+  
+  messageId   String?   // Link to the actual message log if sent
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  to        String
+  body      String
+  status    String   @default("queued")
+  sid       String?
+  error     String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
