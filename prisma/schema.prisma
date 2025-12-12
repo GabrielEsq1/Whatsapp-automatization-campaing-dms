@@ -21,6 +21,10 @@ model User {
   // Relations
   messages    Message[]
   campaigns   Campaign[]
+
+  // WhatsApp Connectivity State (For Vercel Persistence)
+  waStatus    String   @default("DISCONNECTED") 
+  waQrCode    String?  @db.Text
 }
 
 model Campaign {
