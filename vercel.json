@@ -5,9 +5,5 @@
             "src": "package.json",
             "use": "@vercel/next"
         }
-    ],
-    "env": {
-        "DATABASE_URL": "@whatsapp_db_secret",
-        "NEXTAUTH_SECRET": "@nextauth_secret"
-    }
+    ]
 }

@@ -12,3 +12,4 @@ dev.db
 *.sqlite
 # .env
 .vercel
+.env*.local
