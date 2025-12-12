@@ -48,7 +48,7 @@ export default function Home() {
                     </div>
 
                     {/* Demo Carousel */}
-                    <DemoCarousel />
+                    {/* <DemoCarousel /> */}
                 </motion.div>
             </section>
 
