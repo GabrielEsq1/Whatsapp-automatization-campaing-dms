@@ -1,0 +1,12 @@
+node_modules/
+.dev/
+.DS_Store
+npm-debug.log
+*.log
+coverage/
+.next/
+out/
+public/screenshots/
+dev.db
+*.sqlite
+.env

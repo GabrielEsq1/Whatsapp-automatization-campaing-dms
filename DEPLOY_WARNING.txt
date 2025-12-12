@@ -1,0 +1,21 @@
+IMPORTANT:
+This application uses `whatsapp-web.js` (Puppeteer) which requires a persistent server environment (Docker, VPS) and DOES NOT support Vercel Serverless Functions for the sending engine.
+
+However, the "Dashboard" and "Campaign Creation" (Prisma/Postgres) are Vercel-compatible.
+
+RECOMMENDED DEPLOYMENT (Full Stack):
+1. Use Docker (see Dockerfile).
+2. Deploy to Railway, Fly.io, or Render (services that support Docker/Node.js persistent processes).
+
+IF YOU MUST USE VERCEL:
+1. Deploy this repo to Vercel (Front-end + DB mgmt).
+2. The "Campaign Start" buttons and "Connect WhatsApp" features will FAIL on Vercel because they depend on the local `server.js` WebSocket and Puppeteer process.
+3. You would need to separate the "Worker" into a separate API hosted on a VPS that Vercel calls.
+
+FOR LOCAL TESTING / VPS:
+1. `npm install`
+2. `npx prisma db push`
+3. `node server.js` (NOT npm run dev)
+   - Go to localhost:3000
+   - Login -> Connect WhatsApp (Scan QR)
+   - Create Campaign -> Paste Numbers -> Start.
