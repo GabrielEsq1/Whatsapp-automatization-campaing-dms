@@ -24,7 +24,7 @@ const path = require('path');
         console.log(`Navigating to ${url}`);
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
         // Give any animations a moment to settle
-        await page.waitForTimeout(1500);
+        await new Promise(r => setTimeout(r, 1500));
         const filePath = path.join(outDir, filename);
         await page.screenshot({ path: filePath, fullPage: true });
         console.log(`Saved screenshot: ${filePath}`);
