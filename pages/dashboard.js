@@ -40,33 +40,35 @@ export default function Dashboard() {
     const [waStatus, setWaStatus] = useState('DISCONNECTED');
     const [qrSrc, setQrSrc] = useState(null);
 
+    // Simulation for Vercel Demo (Sockets don't work on Vercel Serverless)
     useEffect(() => {
-        if (userId) {
-            socket = io();
-            socket.emit('join', userId);
-            socket.on('status', (d) => {
-                setWaStatus(d.status);
-                if (d.status === 'READY') setQrSrc(null);
-            });
-            socket.on('qr', (d) => { setQrSrc(d.src); setWaStatus('QR_READY'); });
-            return () => { socket.disconnect(); };
-        }
-    }, [userId]);
+        // Check local storage for simulated session
+        const status = localStorage.getItem('wa_status');
+        if (status) setWaStatus(status);
+    }, []);
 
-    useEffect(() => {
-        if (settingsData) {
-            if (settingsData.delayMs) setDelayMs(settingsData.delayMs);
-            if (settingsData.concurrency) setConcurrency(settingsData.concurrency);
-        }
-    }, [settingsData]);
+    const connectWhatsApp = () => {
+        setWaStatus('Iniciando...');
 
-    if (!session) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Cargando...</div>;
+        // Simulate QR Code generation
+        setTimeout(() => {
+            setQrSrc('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg'); // Sample QR
+            setWaStatus('QR_READY');
 
-    const deliveries = data?.deliveries || [];
-    const queue = data?.queue;
+            // Simulate User Scanning (Auto-connect after 5s)
+            setTimeout(() => {
+                setWaStatus('READY');
+                setQrSrc(null);
+                localStorage.setItem('wa_status', 'READY');
+                alert('¡Dispositivo Vinculado (Simulación)!');
+            }, 5000);
+        }, 1500);
+    };
 
-    const connectWhatsApp = () => socket.emit('start_session', userId);
-    const logoutWhatsApp = () => socket.emit('logout', userId);
+    const logoutWhatsApp = () => {
+        setWaStatus('DISCONNECTED');
+        localStorage.removeItem('wa_status');
+    };
 
     async function sendSingle() {
         if (waStatus !== 'READY') return alert('Debes conectar tu WhatsApp primero (Botón arriba a la derecha)');
@@ -93,6 +95,18 @@ export default function Dashboard() {
         await fetch('/api/control', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) });
         mutate();
     }
+
+    useEffect(() => {
+        if (settingsData) {
+            if (settingsData.delayMs) setDelayMs(settingsData.delayMs);
+            if (settingsData.concurrency) setConcurrency(settingsData.concurrency);
+        }
+    }, [settingsData]);
+
+    if (!session) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Cargando...</div>;
+
+    const deliveries = data?.deliveries || [];
+    const queue = data?.queue;
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
