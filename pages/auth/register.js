@@ -42,7 +42,8 @@ export default function Register() {
                 setLoading(false);
             }
         } catch (err) {
-            setError('Ocurrió un error inesperado');
+            console.error(err);
+            setError(err.message || 'Ocurrió un error inesperado');
             setLoading(false);
         }
     }
