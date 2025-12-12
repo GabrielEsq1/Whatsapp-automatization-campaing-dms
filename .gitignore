@@ -13,3 +13,11 @@ dev.db
 # .env
 .vercel
 .env*.local
+
+# WhatsApp Auth
+.wwebjs_auth
+.wwebjs_auth/
+session-*/
+
+# Logs
+debug.log
