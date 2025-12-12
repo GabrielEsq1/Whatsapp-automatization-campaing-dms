@@ -6,7 +6,8 @@ npm-debug.log
 coverage/
 .next/
 out/
-public/screenshots/
+# public/screenshots are tracked with Git LFS, so they must NOT be ignored
+# public/screenshots/
 dev.db
 *.sqlite
 .env
