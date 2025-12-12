@@ -2,9 +2,7 @@
     "name": "realtel-pro-saas",
     "version": "0.1.0",
     "private": true,
-    "devDependencies": {
-        "puppeteer": "^22.8.0"
-    },
+    "devDependencies": {},
     "scripts": {
         "dev": "next dev",
         "build": "npx prisma generate && next build",
@@ -23,6 +21,7 @@
         "next": "latest",
         "next-auth": "latest",
         "p-queue": "^7.3.0",
+        "puppeteer": "^22.8.0",
         "prisma": "^5.10.2",
         "qrcode": "^1.5.4",
         "react": "latest",

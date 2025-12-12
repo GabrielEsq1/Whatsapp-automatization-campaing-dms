@@ -2,7 +2,7 @@
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client'; // Removed for Vercel/Docker persistence logic
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     LogOut,
@@ -20,12 +20,13 @@ import {
 } from 'lucide-react';
 
 const fetcher = (url) => fetch(url).then(r => r.json());
-let socket;
+// let socket; // Removed
 
 export default function Dashboard() {
     const { data: session } = useSession();
     const userId = session?.user?.id;
 
+    // Real Enterprise Polling (Replaces WebSockets for better compatibility with serverless/container mix)
     const { data, mutate } = useSWR(userId ? `/api/status?userId=${userId}` : null, fetcher, { refreshInterval: 2000 });
     const { data: settingsData } = useSWR(userId ? `/api/settings?userId=${userId}` : null, fetcher);
 
@@ -40,34 +41,55 @@ export default function Dashboard() {
     const [waStatus, setWaStatus] = useState('DISCONNECTED');
     const [qrSrc, setQrSrc] = useState(null);
 
-    // Simulation for Vercel Demo (Sockets don't work on Vercel Serverless)
+    // Sync status from polling
     useEffect(() => {
-        // Check local storage for simulated session
-        const status = localStorage.getItem('wa_status');
-        if (status) setWaStatus(status);
-    }, []);
-
-    const connectWhatsApp = () => {
-        setWaStatus('Iniciando...');
-
-        // Simulate QR Code generation
-        setTimeout(() => {
-            setQrSrc('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg'); // Sample QR
+        if (data?.status) setWaStatus(data.status);
+        if (data?.qr) {
+            setQrSrc(data.qr);
             setWaStatus('QR_READY');
+        } else if (data?.status === 'READY') {
+            setQrSrc(null);
+            if (waStatus !== 'READY') setWaStatus('READY');
+        }
+    }, [data]);
 
-            // Simulate User Scanning (Auto-connect after 5s)
-            setTimeout(() => {
-                setWaStatus('READY');
-                setQrSrc(null);
-                localStorage.setItem('wa_status', 'READY');
-                alert('¡Dispositivo Vinculado (Simulación)!');
-            }, 5000);
-        }, 1500);
+    useEffect(() => {
+        if (settingsData) {
+            if (settingsData.delayMs) setDelayMs(settingsData.delayMs);
+            if (settingsData.concurrency) setConcurrency(settingsData.concurrency);
+        }
+    }, [settingsData]);
+
+    if (!session) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Cargando...</div>;
+
+    const deliveries = data?.deliveries || [];
+    const queue = data?.queue;
+
+    const connectWhatsApp = async () => {
+        try {
+            setWaStatus('Iniciando...');
+            const res = await fetch('/api/auth/whatsapp/connect', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+            if (!res.ok) throw new Error('Failed to start session');
+            mutate();
+        } catch (e) {
+            alert('Error al conectar: ' + e.message);
+            setWaStatus('DISCONNECTED');
+        }
     };
 
-    const logoutWhatsApp = () => {
+    const logoutWhatsApp = async () => {
+        await fetch('/api/auth/whatsapp/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId })
+        });
         setWaStatus('DISCONNECTED');
-        localStorage.removeItem('wa_status');
+        setQrSrc(null);
+        mutate();
     };
 
     async function sendSingle() {
@@ -95,18 +117,6 @@ export default function Dashboard() {
         await fetch('/api/control', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) });
         mutate();
     }
-
-    useEffect(() => {
-        if (settingsData) {
-            if (settingsData.delayMs) setDelayMs(settingsData.delayMs);
-            if (settingsData.concurrency) setConcurrency(settingsData.concurrency);
-        }
-    }, [settingsData]);
-
-    if (!session) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Cargando...</div>;
-
-    const deliveries = data?.deliveries || [];
-    const queue = data?.queue;
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
