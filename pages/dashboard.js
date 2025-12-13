@@ -228,8 +228,8 @@ export default function Dashboard() {
                             <div className="card">
                                 <h3 style={{ marginBottom: '1rem' }}>Estado de la Cola</h3>
                                 <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
-                                    <StatBox label="En Cola" value={queue?.size || 0} color="orange" />
-                                    <StatBox label="Procesando" value={queue?.pending || 0} color="blue" />
+                                    <StatBox label="En Cola" value={data?.queue?.size || 0} color="orange" />
+                                    <StatBox label="Procesando" value={data?.queue?.pending || 0} color="blue" />
                                 </div>
                                 <div style={{ display: 'flex', gap: 10 }}>
                                     <button onClick={() => control('pause')} className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Pause size={16} /> Pausar Cola</button>
@@ -237,8 +237,8 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {/* Meta Cloud API Config */}
-                            {settingsData && <MetaConfig user={settingsData} />}
+                            {/* Meta Cloud API Config - Forced Visible */}
+                            <MetaConfig user={settingsData || {}} />
                         </div>
 
                         <div className="card">
