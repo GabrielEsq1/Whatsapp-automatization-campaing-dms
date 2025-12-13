@@ -1,46 +1,48 @@
 const axios = require('axios');
-const HF_TOKEN = process.env.HUGGINGFACE_API_KEY;
+
+// Support both naming conventions
+const HF_TOKEN = process.env.HF_TOKEN || process.env.HUGGINGFACE_API_KEY;
+const ROUTER_URL = "https://router.huggingface.co/v1";
+
+// Models
+const TEXT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"; // Or "moonshotai/Kimi-K2-Instruct-0905" if preferred
+const IMAGE_MODEL = "black-forest-labs/FLUX.1-dev";
 
 /**
- * Generates a response using Llama 3 via Hugging Face Inference API.
- * @param {Array} history - Chat history [{role: 'user'|'assistant', content: '...'}]
- * @param {String} systemInstruction - Instructions for the AI persona.
+ * Generates text response using HF Inference Router (OpenAI Compatible Endpoint)
  */
 async function generateResponse(history, systemInstruction) {
     if (!HF_TOKEN) {
-        console.warn('⚠️ No HUGGINGFACE_API_KEY found. Using fallback text.');
+        console.warn('⚠️ No HF_TOKEN found. Using fallback text.');
         return fallbackResponse(history);
     }
 
     try {
-        const formattedPrompt = buildLlamaPrompt(history, systemInstruction);
+        // Prepare messages in OpenAI format
+        const messages = [
+            { role: "system", content: systemInstruction },
+            ...history
+        ];
 
-        console.log('AI Prompt Size:', formattedPrompt.length);
+        console.log(`🤖 AI Request to ${TEXT_MODEL}`);
 
         const r = await axios.post(
-            'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct',
+            `${ROUTER_URL}/chat/completions`,
             {
-                inputs: formattedPrompt,
-                parameters: {
-                    max_new_tokens: 150,
-                    temperature: 0.7,
-                    top_p: 0.9,
-                    return_full_text: false,
-                    stop: ['<|eot_id|>']
-                }
+                model: TEXT_MODEL,
+                messages: messages,
+                max_tokens: 200, // equivalent to max_new_tokens
+                temperature: 0.7
             },
             {
                 headers: {
-                    Authorization: `Bearer ${HF_TOKEN}`,
+                    'Authorization': `Bearer ${HF_TOKEN}`,
                     'Content-Type': 'application/json'
                 }
             }
         );
 
-        let text = r.data?.[0]?.generated_text?.trim();
-        // Cleanup if any artifacts remain
-        text = text.replace(/^"|"$/g, '').replace(/<\|.*?\|>/g, '');
-        return text || fallbackResponse(history);
+        return r.data?.choices?.[0]?.message?.content?.trim() || fallbackResponse(history);
 
     } catch (e) {
         console.error('AI Gen Failed:', e.response?.data || e.message);
@@ -48,23 +50,40 @@ async function generateResponse(history, systemInstruction) {
     }
 }
 
-function buildLlamaPrompt(history, system) {
-    let prompt = `<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n${system}<|eot_id|>`;
+/**
+ * Generates an image using HF Inference Router
+ * Returns a base64 string or URL (depending on API response, usually blob)
+ * Note: Node.js axios responseType: 'arraybuffer' needed for images.
+ */
+async function generateImage(prompt) {
+    if (!HF_TOKEN) return null;
 
-    history.forEach(msg => {
-        prompt += `<|start_header_id|>${msg.role}<|end_header_id|>\n\n${msg.content}<|eot_id|>`;
-    });
+    try {
+        console.log(`🎨 Generating Image with ${IMAGE_MODEL}`);
+        const r = await axios.post(
+            `https://api-inference.huggingface.co/models/${IMAGE_MODEL}`,
+            { inputs: prompt },
+            {
+                headers: { 'Authorization': `Bearer ${HF_TOKEN}` },
+                responseType: 'arraybuffer'
+            }
+        );
 
-    prompt += `<|start_header_id|>assistant<|end_header_id|>\n\n`;
-    return prompt;
+        // Convert buffer to base64 for easy usage/saving
+        const base64 = Buffer.from(r.data, 'binary').toString('base64');
+        return `data:image/jpeg;base64,${base64}`;
+
+    } catch (e) {
+        console.error('Image Gen Failed:', e.message);
+        return null;
+    }
 }
 
 function fallbackResponse(history) {
     const last = history[history.length - 1];
-    if (last.role === 'assistant') return '...';
-    // basic rotatory fallback
+    if (last?.role === 'assistant') return '...';
     const greetings = ['Hola! 👋', 'Hola, qué tal?', 'Buenas!', 'Hola, cómo vas?'];
     return greetings[Math.floor(Math.random() * greetings.length)];
 }
 
-module.exports = { generateResponse };
+module.exports = { generateResponse, generateImage };
