@@ -36,6 +36,17 @@ async function startConversation(contactId, userId, messageTemplate) {
     // Send via WhatsApp
     await waClient.sendMessage(userId, contact.phone, greeting);
 
+    // Log to Dashboard
+    await prisma.message.create({
+        data: {
+            userId,
+            to: contact.phone,
+            body: greeting,
+            status: 'sent',
+            sid: 'BOT_INIT_' + Date.now()
+        }
+    });
+
     // Update DB
     await prisma.campaignContact.update({
         where: { id: contactId },
@@ -106,31 +117,39 @@ async function handleIncomingData(userId, fromPhone, incomingBody) {
     }
 
     // Send AI Response
-    if (nextResponse) {
-        // Small "typing" delay simulation logic can be added here if we had queue access, 
-        // but likely we just fire sending immediately for now or use client.sendMessage
-        await waClient.sendMessage(userId, contact.phone, nextResponse);
+    await waClient.sendMessage(userId, contact.phone, nextResponse);
 
-        history.push({ role: 'assistant', content: nextResponse });
-
-        await prisma.campaignContact.update({
-            where: { id: contact.id },
-            data: {
-                conversationStage: nextStage,
-                history: history,
-                lastInteraction: new Date()
-            }
-        });
-
-        // If stage 3, marks as 'SENT' (completed from automation perspective)? 
-        // Or keep 'handover' if user replies again. 
-        if (nextStage === 3) {
-            // We consider the campaign message delivered here
-            await prisma.campaignContact.update({ where: { id: contact.id }, data: { status: 'SENT' } });
+    // 3. Log to Message Table so it appears in Dashboard
+    await prisma.message.create({
+        data: {
+            userId: userId,
+            to: contact.phone,
+            body: nextResponse,
+            status: 'sent',
+            sid: 'BOT_ID_' + Date.now()
         }
-    }
+    });
 
-    return true;
+    history.push({ role: 'assistant', content: nextResponse });
+
+    await prisma.campaignContact.update({
+        where: { id: contact.id },
+        data: {
+            conversationStage: nextStage,
+            history: history,
+            lastInteraction: new Date()
+        }
+    });
+
+    // If stage 3, marks as 'SENT' (completed from automation perspective)? 
+    // Or keep 'handover' if user replies again. 
+    if (nextStage === 3) {
+        // We consider the campaign message delivered here
+        await prisma.campaignContact.update({ where: { id: contact.id }, data: { status: 'SENT' } });
+    }
+}
+
+return true;
 }
 
 module.exports = { startConversation, handleIncomingData };
