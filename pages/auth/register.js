@@ -59,9 +59,7 @@ export default function Register() {
                 style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{ width: 56, height: 56, background: '#2563eb', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'white', boxShadow: '0 10px 15px -3px rgba(37, 99, 235, 0.3)' }}>
-                        <UserPlus size={28} />
-                    </div>
+                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 72, height: 72, margin: '0 auto 1rem', display: 'block' }} />
                     <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', color: '#1e293b' }}>Crear Cuenta</h1>
                     <p style={{ color: '#64748b' }}>Únete a ReaTel Pro y automatiza tu marketing</p>
                 </div>

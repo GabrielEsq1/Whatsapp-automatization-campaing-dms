@@ -35,9 +35,7 @@ export default function SignIn() {
                 style={{ width: '100%', maxWidth: '400px', padding: '2.5rem' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{ width: 48, height: 48, background: '#2563eb', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', color: 'white' }}>
-                        <Smartphone size={24} />
-                    </div>
+                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 64, height: 64, margin: '0 auto 1rem', display: 'block' }} />
                     <h1 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Bienvenido</h1>
                     <p style={{ color: 'var(--muted-foreground)' }}>Inicia sesión en ReaTel Pro</p>
                 </div>

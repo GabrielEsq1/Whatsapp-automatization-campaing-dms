@@ -124,10 +124,9 @@ export default function Dashboard() {
             {/* Sidebar */}
             <aside style={{ width: 260, background: 'white', borderRight: '1px solid var(--border)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '3rem' }}>
-                    <div style={{ background: 'var(--primary)', padding: 8, borderRadius: 8, color: 'white' }}>
-                        <Smartphone size={20} />
-                    </div>
-                    <h2 style={{ fontSize: '1.25rem' }}>ReaTel Pro</h2>
+                    {/* Brand Logo */}
+                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 40, height: 40, objectFit: 'contain' }} />
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>ReaTel Pro</h2>
                 </div>
 
                 <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
