@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { UserPlus, Mail, Lock, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import Logo from '../../components/Logo';
 import Link from 'next/link';
 
 export default function Register() {
@@ -59,7 +60,9 @@ export default function Register() {
                 style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 72, height: 72, margin: '0 auto 1rem', display: 'block' }} />
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                        <Logo size={72} />
+                    </div>
                     <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', color: '#1e293b' }}>Crear Cuenta</h1>
                     <p style={{ color: '#64748b' }}>Únete a ReaTel Pro y automatiza tu marketing</p>
                 </div>

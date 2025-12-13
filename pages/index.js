@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import DemoCarousel from '../components/DemoCarousel';
+import Logo from '../components/Logo';
 import { Zap, ArrowRight, MessageCircle, Shield } from 'lucide-react';
 
 export default function Home() {
@@ -11,9 +12,7 @@ export default function Home() {
             {/* Navbar */}
             <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem 2rem', maxWidth: 1200, margin: '0 auto' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 700, fontSize: '1.25rem', color: '#0f172a' }}>
-                    <div style={{ width: 32, height: 32, background: '#2563eb', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                        <Zap size={20} fill="white" />
-                    </div>
+                    <Logo size={32} />
                     ReaTel Pro
                 </div>
                 <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>

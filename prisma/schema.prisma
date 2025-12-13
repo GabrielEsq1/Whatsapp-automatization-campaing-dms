@@ -33,6 +33,10 @@ model Campaign {
   status      String    @default("DRAFT") // DRAFT, PROCESSING, COMPLETED, PAUSED
   messageTemplate String
   
+  // Frequency Settings
+  minDelay    Int       @default(2000)
+  maxDelay    Int       @default(5000)
+
   userId      String
   user        User      @relation(fields: [userId], references: [id])
   

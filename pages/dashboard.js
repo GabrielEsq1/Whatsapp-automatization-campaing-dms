@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 // import io from 'socket.io-client'; // Removed for Vercel/Docker persistence logic
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from '../components/Logo';
 import {
     LogOut,
     Send,
@@ -16,7 +17,8 @@ import {
     Play,
     Users,
     CheckCircle,
-    AlertCircle
+    AlertCircle,
+    Sparkles
 } from 'lucide-react';
 
 const fetcher = (url) => fetch(url).then(r => r.json());
@@ -36,6 +38,8 @@ export default function Dashboard() {
     const [campName, setCampName] = useState('');
     const [campNumbers, setCampNumbers] = useState('');
     const [campMessage, setCampMessage] = useState('');
+    const [campDelay, setCampDelay] = useState('safe');
+    const [isGenerating, setIsGenerating] = useState(false);
     const [delayMs, setDelayMs] = useState(1500);
     const [concurrency, setConcurrency] = useState(1);
     const [waStatus, setWaStatus] = useState('DISCONNECTED');
@@ -125,7 +129,7 @@ export default function Dashboard() {
             <aside style={{ width: 260, background: 'white', borderRight: '1px solid var(--border)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '3rem' }}>
                     {/* Brand Logo */}
-                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 40, height: 40, objectFit: 'contain' }} />
+                    <Logo size={40} />
                     <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>ReaTel Pro</h2>
                 </div>
 

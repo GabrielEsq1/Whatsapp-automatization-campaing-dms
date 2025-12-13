@@ -2,36 +2,42 @@
 import axios from 'axios';
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
+const HF_TOKEN = process.env.HUGGINGFACE_API_KEY;
 
 /**
- * generateVariation: si hay OPENAI_API_KEY usa la API para reescribir el mensaje;
- * si no, hace un reemplazo simple de sinónimos (fallback).
+ * generateVariation: Usa HF (Llama), OpenAI o Fallback
  */
 export async function generateVariation(message, context = '') {
     if (!message) return message;
 
+    // 1. Hugging Face (Llama-3) - PREFERRED
+    if (HF_TOKEN) {
+        try {
+            const prompt = `<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nGenera una variación de este mensaje de WhatsApp manteniendo el mismo significado pero cambiando palabras para evitar spam. Solo devuelve el mensaje.\n\nMensaje Original: "${message}"<|eot_id|><|start_header_id|>assistant<|end_header_id|>`;
+
+            const r = await axios.post('https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct',
+                { inputs: prompt, parameters: { max_new_tokens: 200, temperature: 0.9, return_full_text: false } },
+                { headers: { Authorization: `Bearer ${HF_TOKEN}` } });
+
+            const text = r.data?.[0]?.generated_text?.trim();
+            if (text) return text.replace(/"/g, '');
+        } catch (e) {
+            console.warn('HF variation failed:', e.message);
+        }
+    }
+
+    // 2. OpenAI (Legacy)
     if (OPENAI_KEY) {
         try {
-            const prompt = `Reescribe el siguiente mensaje manteniendo el mismo sentido, usando sinónimos y variando la estructura para que parezca un mensaje humano distinto. Devuelve solamente el mensaje final en español.\n\nMensaje: """${message}"""\n\nContexto: ${context}\n\nVersión:`;
-            const r = await axios.post('https://api.openai.com/v1/completions', {
-                model: "text-davinci-003",
-                prompt,
-                max_tokens: 180,
-                temperature: 0.8,
-                n: 1,
-                stop: null
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${OPENAI_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            const text = r.data?.choices?.[0]?.text?.trim();
+            // ... (keep existing openai logic structure if needed, or simplified)
+            const r = await axios.post('https://api.openai.com/v1/chat/completions', {
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: `Reescribe este mensaje para WhatsApp evitando spam: "${message}"` }],
+            }, { headers: { Authorization: `Bearer ${OPENAI_KEY}` } });
+
+            const text = r.data?.choices?.[0]?.message?.content?.trim();
             if (text) return text;
-        } catch (e) {
-            console.warn('OpenAI variation failed, falling back:', e.message);
-            // fallback below
-        }
+        } catch (e) { console.warn('OpenAI failed:', e.message); }
     }
 
     // Simple fallback: reemplazos básicos

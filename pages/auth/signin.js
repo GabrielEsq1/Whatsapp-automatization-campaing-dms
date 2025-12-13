@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { Lock, Mail, ArrowRight, Smartphone } from 'lucide-react';
+import Logo from '../../components/Logo';
 import Link from 'next/link';
 
 export default function SignIn() {
@@ -35,7 +36,9 @@ export default function SignIn() {
                 style={{ width: '100%', maxWidth: '400px', padding: '2.5rem' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <img src="/logo.png" alt="ReaTel Logo" style={{ width: 64, height: 64, margin: '0 auto 1rem', display: 'block' }} />
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                        <Logo size={64} />
+                    </div>
                     <h1 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Bienvenido</h1>
                     <p style={{ color: 'var(--muted-foreground)' }}>Inicia sesión en ReaTel Pro</p>
                 </div>

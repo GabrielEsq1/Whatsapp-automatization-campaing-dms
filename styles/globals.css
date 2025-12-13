@@ -4,9 +4,9 @@
 :root {
     --background: #ffffff;
     --foreground: #0f172a;
-    --primary: #2563eb;
+    --primary: #22c55e;
     --primary-foreground: #ffffff;
-    --muted: #f1f5f9;
+    --muted: #f0fdf4;
     --muted-foreground: #64748b;
     --border: #e2e8f0;
     --radius: 0.5rem;
@@ -15,8 +15,8 @@
 [data-theme='dark'] {
     --background: #020817;
     --foreground: #f8fafc;
-    --primary: #3b82f6;
-    --primary-foreground: #ffffff;
+    --primary: #4ade80;
+    --primary-foreground: #020817;
     --muted: #1e293b;
     --muted-foreground: #94a3b8;
     --border: #1e293b;
@@ -64,7 +64,7 @@ input:focus,
 textarea:focus,
 select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
 
 button {
@@ -83,12 +83,12 @@ button:active {
     color: var(--primary-foreground);
     border: none;
     padding: 0.75rem 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #1d4ed8;
-    box-shadow: 0 6px 8px -2px rgba(37, 99, 235, 0.3);
+    background-color: #16a34a;
+    box-shadow: 0 6px 8px -2px rgba(34, 197, 94, 0.3);
 }
 
 .btn-outline {
