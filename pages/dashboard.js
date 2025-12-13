@@ -120,14 +120,25 @@ export default function Dashboard() {
 
     async function createCampaign() {
         if (!campName || !campNumbers || !campMessage) return alert('Completa todos los campos');
-        const res = await fetch('/api/campaigns/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: campName, numbers: campNumbers, message: campMessage, userId }) });
+        // Default delay 5s if custom not set or invalid
+        const delay = parseInt(campDelay) > 0 ? parseInt(campDelay) : 5;
+
+        const res = await fetch('/api/campaigns/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: campName, numbers: campNumbers, message: campMessage, userId, delaySeconds: delay })
+        });
         const d = await res.json();
         if (d.id && confirm(`Campaña creada con ${d._count.contacts} números. ¿Iniciar envío ahora?`)) {
-            await fetch('/api/campaigns/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId, campaignId: d.id }) });
+            await fetch('/api/campaigns/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, campaignId: d.id, delaySeconds: delay })
+            });
             alert('Campaña iniciada. Revisa el Dashboard.');
             setActiveTab('dashboard');
         }
-        setCampName(''); setCampNumbers(''); setCampMessage('');
+        setCampName(''); setCampNumbers(''); setCampMessage(''); setCampDelay('');
     }
 
     async function control(action) {
@@ -271,6 +282,17 @@ export default function Dashboard() {
                                 <div>
                                     <label style={{ display: 'block', marginBottom: 6, fontSize: '0.9rem', fontWeight: 500 }}>Mensaje Base (IA Variaciones)</label>
                                     <textarea rows={4} placeholder="Hola! Tenemos una oferta para ti..." value={campMessage} onChange={e => setCampMessage(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: 6, fontSize: '0.9rem', fontWeight: 500 }}>Intervalo entre mensajes (segundos)</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        placeholder="Min: 2 seg"
+                                        value={campDelay}
+                                        onChange={e => setCampDelay(e.target.value)}
+                                    />
+                                    <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: 4 }}>Ayuda a evitar bloqueos y simula comportamiento humano.</p>
                                 </div>
                                 <button onClick={createCampaign} className="btn-primary" style={{ justifySelf: 'start', display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <Send size={18} /> Lanzar Campaña
