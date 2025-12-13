@@ -1,4 +1,4 @@
-import { handleIncomingData } from '../../../../services/conversationBot';
+import { handleIncomingData } from '../../../services/conversationBot';
 
 /**
  * Debug Endpoint to simulate receiving a WhatsApp Message
