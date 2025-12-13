@@ -195,13 +195,27 @@ export default function Dashboard() {
 
                     <div className="card" style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <div style={{ width: 10, height: 10, borderRadius: '50%', background: waStatus === 'READY' ? '#22c55e' : waStatus === 'DISCONNECTED' ? '#ef4444' : '#f59e0b' }} />
-                            <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>
-                                {waStatus === 'READY' ? 'Conectado' : waStatus === 'DISCONNECTED' ? 'Desconectado' : 'Iniciando...'}
-                            </span>
+                            {/* Priority: Meta Status -> WA Web Status */}
+                            {settingsData?.metaPhoneId ? (
+                                <>
+                                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#22c55e' }} />
+                                    <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>Meta API Activa</span>
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: waStatus === 'READY' ? '#22c55e' : waStatus === 'DISCONNECTED' ? '#ef4444' : '#f59e0b' }} />
+                                    <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                                        {waStatus === 'READY' ? 'Conectado (Web)' : waStatus === 'DISCONNECTED' ? 'Desconectado' : 'Iniciando...'}
+                                    </span>
+                                </>
+                            )}
                         </div>
-                        {waStatus === 'DISCONNECTED' && <button onClick={connectWhatsApp} style={{ fontSize: '0.8rem', padding: '4px 12px' }}>Conectar</button>}
-                        {waStatus === 'READY' && <button onClick={logoutWhatsApp} className="btn-outline" style={{ fontSize: '0.8rem', padding: '4px 12px' }}>Desconectar</button>}
+
+                        {/* If using old WA Web, show controls. If Meta, show nothing or "Config" btn */}
+                        {!settingsData?.metaPhoneId && waStatus === 'DISCONNECTED' && <button onClick={connectWhatsApp} style={{ fontSize: '0.8rem', padding: '4px 12px' }}>Conectar Web</button>}
+                        {!settingsData?.metaPhoneId && waStatus !== 'DISCONNECTED' && waStatus !== 'READY' && (
+                            <button onClick={() => setWaStatus('DISCONNECTED')} style={{ fontSize: '0.8rem', padding: '4px 12px' }} className="btn-outline">Reset</button> // Emergency Reset
+                        )}
                     </div>
                 </div>
 
