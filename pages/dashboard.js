@@ -1,4 +1,17 @@
-// pages/dashboard.js
+// ... imports
+import MetaConfig from '../components/MetaConfig';
+
+// ... inside render tabs
+{
+    activeTab === 'dashboard' && (
+        <div className='...'>
+            {/* ... existing dashboard content ... */}
+            {/* Replace QR Section with MetaConfig for Vercel users, or show alongside */}
+            {/* For simplicity, we just append it below the status */}
+            <MetaConfig user={settingsData || {}} />
+        </div>
+    )
+}
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
@@ -200,16 +213,21 @@ export default function Dashboard() {
                 {/* Dashboard Tab */}
                 {activeTab === 'dashboard' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
-                        <div className="card">
-                            <h3 style={{ marginBottom: '1rem' }}>Estado de la Cola</h3>
-                            <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
-                                <StatBox label="En Cola" value={queue?.size || 0} color="orange" />
-                                <StatBox label="Procesando" value={queue?.pending || 0} color="blue" />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                            <div className="card">
+                                <h3 style={{ marginBottom: '1rem' }}>Estado de la Cola</h3>
+                                <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
+                                    <StatBox label="En Cola" value={queue?.size || 0} color="orange" />
+                                    <StatBox label="Procesando" value={queue?.pending || 0} color="blue" />
+                                </div>
+                                <div style={{ display: 'flex', gap: 10 }}>
+                                    <button onClick={() => control('pause')} className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Pause size={16} /> Pausar Cola</button>
+                                    <button onClick={() => control('resume')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Play size={16} /> Reanudar</button>
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', gap: 10 }}>
-                                <button onClick={() => control('pause')} className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Pause size={16} /> Pausar Cola</button>
-                                <button onClick={() => control('resume')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Play size={16} /> Reanudar</button>
-                            </div>
+
+                            {/* Meta Cloud API Config */}
+                            {settingsData && <MetaConfig user={settingsData} />}
                         </div>
 
                         <div className="card">

@@ -25,6 +25,11 @@ model User {
   // WhatsApp Connectivity State (For Vercel Persistence)
   waStatus    String   @default("DISCONNECTED") 
   waQrCode    String?  @db.Text
+
+  // Official Meta Cloud API (The Real Vercel Solution)
+  metaPhoneId     String?
+  metaAccessToken String? @db.Text
+  metaWabaId      String?
 }
 
 model Campaign {

@@ -1,6 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const { generateResponse } = require('./aiService');
-const waClient = require('../lib/whatsappClient');
+// Use Meta Service
+const waClient = require('./metaService');
+// const waClient = require('../lib/whatsappClient');
 
 const prisma = new PrismaClient();
 

@@ -2,7 +2,9 @@
 import prisma from '../../../lib/prisma';
 import { enqueue } from '../../../lib/queue';
 import { generateVariation } from '../../../services/variationService';
-import { sendMessage } from '../../../lib/whatsappClient';
+// Switch to Meta Service (Official API)
+import { sendMessage } from '../../../services/metaService';
+// import { sendMessage } from '../../../lib/whatsappClient'; // Deprecated for Vercel
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end();
