@@ -52,6 +52,11 @@ model CampaignContact {
   campaign    Campaign  @relation(fields: [campaignId], references: [id])
   
   messageId   String?   // Link to the actual message log if sent
+  
+  // Conversational AI State
+  conversationStage Int      @default(0) // 0: Init, 1: Sent Greeting 1, 2: Sent Greeting 2, 3: Sent Payload, 4: Handover
+  history         Json?     // Stores array of { role, content }
+  lastInteraction DateTime?
 }
 
 model Message {

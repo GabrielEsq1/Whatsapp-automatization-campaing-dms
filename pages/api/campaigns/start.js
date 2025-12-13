@@ -43,27 +43,17 @@ export default async function handler(req, res) {
                 try {
                     // Double check status before sending in case paused (not impl yet)
 
-                    // 1. Generate Variation
-                    const body = await generateVariation(campaign.messageTemplate);
+                    // 1. Start Conversation Flow (Bot)
+                    const conversationBot = require('../../../services/conversationBot');
+                    await conversationBot.startConversation(contact.id, userId, campaign.messageTemplate);
 
-                    // 2. Send via WhatsApp Client
-                    const result = await sendMessage(userId, contact.phone, body);
+                    // 3. Log Initial Activity (optional, handled by startConversation update)
+                    // We simply assume success if no error thrown
+                    console.log(`Initialized conversation with ${contact.phone}`);
 
-                    // 3. Log Message
-                    const dbMsg = await prisma.message.create({
-                        data: {
-                            to: contact.phone,
-                            body,
-                            status: 'sent',
-                            sid: result.sid,
-                            userId
-                        }
-                    });
-
-                    // 4. Update Contact Status
                     await prisma.campaignContact.update({
                         where: { id: contact.id },
-                        data: { status: 'SENT', messageId: dbMsg.id }
+                        data: { status: 'ACTIVE_CONVO', messageId: 'BOT_INIT' }
                     });
 
                 } catch (err) {
