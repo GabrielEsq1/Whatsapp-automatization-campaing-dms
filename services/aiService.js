@@ -2,7 +2,8 @@ const axios = require('axios');
 
 // Support both naming conventions
 const HF_TOKEN = process.env.HF_TOKEN || process.env.HUGGINGFACE_API_KEY;
-const ROUTER_URL = "https://router.huggingface.co/v1";
+// Use a specific Space URL if provided (e.g., https://my-space.hf.space/v1), otherwise default to Router
+const ROUTER_URL = process.env.HF_SPACE_URL || "https://router.huggingface.co/v1";
 
 // Models
 const TEXT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"; // Or "moonshotai/Kimi-K2-Instruct-0905" if preferred
