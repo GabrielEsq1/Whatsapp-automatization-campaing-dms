@@ -1,0 +1,33 @@
+﻿.next/dev/types/validator.ts(256,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/campaigns/[id]/reject/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/campaigns/[id]/reject">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; campaign: { status: string; name: string; id: string; ... 19 more ...; endDate: Date | null; }; message: string; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(463,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/conversations/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/conversations/[id]">'.
+  Types of property 'DELETE' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(256,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/campaigns/[id]/reject/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/campaigns/[id]/reject">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; campaign: { status: string; name: string; id: string; ... 19 more ...; endDate: Date | null; }; message: string; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(463,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/conversations/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/conversations/[id]">'.
+  Types of property 'DELETE' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+src/app/api/conversations/[id]/route.ts(25,24): error TS2353: Object literal may only specify known properties, and 'participants' does not exist in type 'ConversationInclude<DefaultArgs>'.
+src/app/api/conversations/[id]/route.ts(35,44): error TS2339: Property 'participants' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; companyAId: string | null; companyBId: string | null; type: ConversationType; userAId: string | null; userBId: string | null; groupId: string | null; }'.
+src/app/api/conversations/[id]/route.ts(36,13): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/components/campaigns/CampaignForm.tsx(165,17): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.

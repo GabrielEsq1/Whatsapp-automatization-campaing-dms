@@ -1,0 +1,88 @@
+# B2BChat - Usuarios de Prueba
+
+## URL Local
+**Aplicación**: http://localhost:3000
+**Página de Login**: http://localhost:3000/login
+**Página de Registro**: http://localhost:3000/register
+**Dashboard**: http://localhost:3000/dashboard
+**Chat**: http://localhost:3000/chat
+**Marketplace**: http://localhost:3000/marketplace
+**Ads Manager**: http://localhost:3000/ads-manager/create
+**Social Hub**: http://localhost:3000/social-hub
+
+---
+
+## USUARIOS REGULARES
+
+### Usuario 1
+- **Nombre**: Juan Pérez
+- **Email**: juan@example.com
+- **Contraseña**: usuario123
+- **Rol**: USUARIO
+
+### Usuario 2
+- **Nombre**: María García
+- **Email**: maria@example.com
+- **Contraseña**: usuario123
+- **Rol**: USUARIO
+
+### Usuario 3
+- **Nombre**: Carlos López
+- **Email**: carlos@example.com
+- **Contraseña**: usuario123
+- **Rol**: USUARIO
+
+### Usuario 4 (Ya creado en pruebas)
+- **Nombre**: Test User
+- **Email**: test2@example.com
+- **Contraseña**: password123
+- **Rol**: USUARIO
+
+---
+
+## ADMINISTRADORES
+
+### Admin Empresa
+- **Nombre**: Admin Empresa
+- **Email**: admin@example.com
+- **Contraseña**: admin123
+- **Rol**: ADMIN_EMPRESA
+- **Permisos**: Gestión de empresa
+
+### Super Administrador
+- **Nombre**: Super Admin
+- **Email**: superadmin@example.com
+- **Contraseña**: super123
+- **Rol**: SUPERADMIN
+- **Permisos**: Acceso completo al sistema
+
+---
+
+## Información Adicional
+
+### Base de Datos
+- **Tipo**: SQLite
+- **Ubicación**: `prisma/dev.db`
+
+### Roles Disponibles
+1. **USUARIO**: Usuario regular con permisos básicos
+2. **ADMIN_EMPRESA**: Administrador de empresa
+3. **SUPERADMIN**: Super administrador con acceso completo
+
+### Cómo Crear los Usuarios
+Ejecutar el siguiente comando en la terminal:
+```bash
+npx tsx scripts/create-test-users.ts
+```
+
+### Seguridad
+- Todas las contraseñas están hasheadas con bcrypt (10 rounds)
+- Las sesiones usan JWT con NextAuth
+- Las rutas protegidas requieren autenticación
+
+---
+
+## Notas
+- Estos usuarios son solo para desarrollo/pruebas
+- NO usar estas credenciales en producción
+- Cambiar todas las contraseñas antes de deployment

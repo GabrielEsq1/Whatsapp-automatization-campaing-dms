@@ -1,0 +1,36 @@
+.next/dev/types/validator.ts(202,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/ads/[id]/approve/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/ads/[id]/approve">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; ad: { id: string; createdAt: Date; updatedAt: Date; ... 17 more ...; impressionsCount: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(211,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/ads/[id]/reject/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/ads/[id]/reject">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; ad: { id: string; createdAt: Date; updatedAt: Date; ... 17 more ...; impressionsCount: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(202,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/ads/[id]/approve/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/ads/[id]/approve">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; ad: { id: string; createdAt: Date; updatedAt: Date; ... 17 more ...; impressionsCount: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(211,31): error TS2344: Type 'typeof import("C:/Users/ASUS/Desktop/B2BChat/src/app/api/admin/ads/[id]/reject/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/admin/ads/[id]/reject">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; ad: { id: string; createdAt: Date; updatedAt: Date; ... 17 more ...; impressionsCount: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+src/app/api/admin/ads/[id]/approve/route.ts(20,13): error TS2367: This comparison appears to be unintentional because the types 'Role | undefined' and '"ADMIN"' have no overlap.
+src/app/api/admin/ads/[id]/reject/route.ts(20,13): error TS2367: This comparison appears to be unintentional because the types 'Role | undefined' and '"ADMIN"' have no overlap.
+src/app/api/admin/ads/route.ts(17,13): error TS2367: This comparison appears to be unintentional because the types 'Role | undefined' and '"ADMIN"' have no overlap.
+src/app/api/auth/[...nextauth]/route.ts(82,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/app/api/auth/[...nextauth]/route.ts(84,5): error TS1117: An object literal cannot have multiple properties with the same name.
+src/app/api/campaigns/create/route.ts(35,13): error TS2322: Type '{ userId: string; companyId: string; name: any; objective: any; status: string; industry: any; sector: any; targetRoles: string | null; dailyBudget: number; durationDays: number; totalBudget: number; }' is not assignable to type '(Without<AdCampaignCreateInput, AdCampaignUncheckedCreateInput> & AdCampaignUncheckedCreateInput) | (Without<...> & AdCampaignCreateInput)'.
+  Type '{ userId: string; companyId: string; name: any; objective: any; status: string; industry: any; sector: any; targetRoles: string | null; dailyBudget: number; durationDays: number; totalBudget: number; }' is not assignable to type 'Without<AdCampaignCreateInput, AdCampaignUncheckedCreateInput> & AdCampaignUncheckedCreateInput'.
+    Property 'creativeType' is missing in type '{ userId: string; companyId: string; name: any; objective: any; status: string; industry: any; sector: any; targetRoles: string | null; dailyBudget: number; durationDays: number; totalBudget: number; }' but required in type 'AdCampaignUncheckedCreateInput'.
